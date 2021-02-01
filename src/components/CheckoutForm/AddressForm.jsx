@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
-import { InputLabel, Select,MenuItem, Button, Grid, Typography } from '@material-ui/core'
+import React, { useState, useEffect } from 'react'
+import { InputLabel, Select, MenuItem, Button, Grid, Typography } from '@material-ui/core'
 import { useForm, FormProvider } from 'react-hook-form'
 
 import { commerce } from '../../lib/commerce'
-
 import FormInput from './FormInput'
 
-const AddressForm = () => {
+const AddressForm = ({ checkoutToken }) => {
     const [shippingCountries, setShippingCountries] = useState([])
     const [shippingCountry, setShippingCountry] = useState('')
     const [shippingSubdivisions, setShippingSubdivisions] = useState([])
@@ -19,13 +18,19 @@ const AddressForm = () => {
     const fetchShippingCountries = async (checkoutTokenId) => {
         const { countries } = await commerce.services.localeListShippingCountries(checkoutTokenId)
 
+        console.log(countries)
         setShippingCountries(countries)
+        setShippingCountry(Object.keys(countries)[0])
     }
+
+    useEffect(() => {
+        fetchShippingCountries(checkoutToken.id)
+    }, [])
 
     return (
         <>
             <Typography variant="h6" gutterBottom>Shipping Address</Typography>
-            <FormProvider { ...methods}>
+            <FormProvider {...methods}>
                 <form onSubmit=''>
                     <Grid container spacing={3}>
                         <FormInput required name='firstName' label='First name' />
@@ -34,7 +39,7 @@ const AddressForm = () => {
                         <FormInput required name='email' label='Email' />
                         <FormInput required name='postcode' label='Postal code' />
                         <FormInput required name='city' label='City' />
-                        <Grid item xs={12} sm={6}>
+                        {/* <Grid item xs={12} sm={6}>
                             <InputLabel>Shipping Country</InputLabel>
                             <Select value={} fullWidth onChange={}>
                                 <MenuItem key={} value={}>
@@ -57,7 +62,7 @@ const AddressForm = () => {
                                     Select Me
                                 </MenuItem>
                             </Select>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </form>
             </FormProvider>
