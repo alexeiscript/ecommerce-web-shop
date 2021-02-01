@@ -7,6 +7,8 @@ const Products = ({ products, onAddToCart }) => {
     const classes = useStyles()
     if (!products.length) return <p>Loading...</p>;
 
+    console.log('test')
+
     return(
         <main className={classes.content}>
             <div className={classes.toolbar} />
