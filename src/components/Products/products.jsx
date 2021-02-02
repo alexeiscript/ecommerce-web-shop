@@ -7,7 +7,7 @@ const Products = ({ products, onAddToCart }) => {
     const classes = useStyles()
     if (!products.length) return <p>Loading...</p>;
 
-    console.log('test')
+    console.log('testing')
 
     return(
         <main className={classes.content}>
