@@ -13,6 +13,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     const [checkoutToken, setCheckoutToken] = useState(null)
     const [activeStep, setActiveStep] = useState(0)
     const [shippingData, setShippingData] = useState({});
+    const [isFinished, setIsFinished] = useState(false)
 
     const classes = useStyles()
     const history = useHistory()
@@ -40,6 +41,11 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         nextStep();
       };
     
+    const timeout = () => {
+        setTimeout(() => {
+            setIsFinished(true)
+        }, 5000)
+    }
 
     let Confirmation = () => order.customer ? (
         <>
@@ -47,6 +53,15 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
                 <Typography variant="h5">Thank you for your purchase, {order.customer.firstname}</Typography>
                 <Divider className={classes.divider} />
                 <Typography variant="subtitle2">Order ref: {order.customer_reference}</Typography>
+            </div>
+            <br />
+            <Button component={Link} to="/" variant="outlined" type="button">Back to Home</Button>
+        </>
+    ) : isFinished ? (
+        <>
+            <div>
+                <Typography variant="h5">Thank you for your purchase</Typography>
+                <Divider className={classes.divider} />
             </div>
             <br />
             <Button component={Link} to="/" variant="outlined" type="button">Back to Home</Button>
@@ -67,7 +82,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
     const Form = () => activeStep === 0
         ? <AddressForm checkoutToken={checkoutToken} nextStep={nextStep} setShippingData={setShippingData} next={next} />
-        : <PaymentForm checkoutToken={checkoutToken} nextStep={nextStep} backStep={backStep} shippingData={shippingData} onCaptureCheckout={onCaptureCheckout}/>
+        : <PaymentForm checkoutToken={checkoutToken} nextStep={nextStep} backStep={backStep} shippingData={shippingData} onCaptureCheckout={onCaptureCheckout} timeout={timeout} />
 
     return (
         <>
