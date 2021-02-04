@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button, CssBaseline } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import { commerce } from '../../../lib/commerce'
 import AddressForm from '../AddressForm'
@@ -15,6 +15,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     const [shippingData, setShippingData] = useState({});
 
     const classes = useStyles()
+    const history = useHistory()
 
     useEffect(() => {
         const generateToken = async () => {
@@ -23,7 +24,8 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
                 
                 setCheckoutToken(token)
             } catch (error) {
-                console.log(error)
+                history.pushState('/')
+                // console.log(error)
             }
         }
         generateToken()
